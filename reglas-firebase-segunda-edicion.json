@@ -1,0 +1,68 @@
+{
+  "rules": {
+    "tickets": {
+      ".read": true,
+      "$n": {
+        ".write": "auth != null || (!data.exists() && newData.val() === 'p')",
+        ".validate": "$n.matches(/^([1-9][0-9]{0,3}|[1-5][0-9]{4}|60000)$/) && (newData.val() === 'p' || newData.val() === 'c')"
+      }
+    },
+    "phones": {
+      "$p": {
+        ".read": true,
+        ".write": "auth != null || (!data.exists() && newData.exists())",
+        ".validate": "$p.matches(/^[0-9]{10}$/) && newData.isString() && newData.val().matches(/^[0-9]{1,5}(,[0-9]{1,5})*$/)"
+      }
+    },
+    "registrations": {
+      ".read": "auth != null",
+      ".indexOn": [
+        "status"
+      ],
+      "$p": {
+        ".write": "auth != null || (!data.exists() && newData.child('status').val() === 'pending')",
+        ".validate": "$p.matches(/^[0-9]{10}$/) && newData.hasChildren(['name','phone','nums','qty','amount','status','paymentStatus','ts']) && newData.child('phone').val() === $p && newData.child('name').isString() && newData.child('name').val().length >= 5 && newData.child('name').val().length <= 80 && newData.child('nums').isString() && newData.child('nums').val().matches(/^[0-9]{1,5}(,[0-9]{1,5})*$/) && newData.child('qty').isNumber() && newData.child('qty').val() >= 1 && newData.child('qty').val() <= 60000 && newData.child('amount').isNumber() && newData.child('amount').val() === newData.child('qty').val() * 20 && newData.child('status').val() === 'pending' && newData.child('paymentStatus').val() === 'pending' && newData.child('ts').isNumber()"
+      }
+    },
+    "shots": {
+      ".read": "auth != null",
+      "$p": {
+        ".write": "auth != null || (!data.exists() && newData.exists())",
+        ".validate": "$p.matches(/^[0-9]{10}$/) && newData.isString() && newData.val().length < 400000 && newData.val().beginsWith('data:image/jpeg;base64,')"
+      }
+    },
+    "segundaEdicion": {
+      "tickets": {
+        ".read": true,
+        "$n": {
+          ".write": "auth != null || (!data.exists() && newData.val() === 'p')",
+          ".validate": "$n.matches(/^([1-9][0-9]{0,3}|[1-5][0-9]{4}|60000)$/) && (newData.val() === 'p' || newData.val() === 'c')"
+        }
+      },
+      "phones": {
+        "$p": {
+          ".read": true,
+          ".write": "auth != null || (!data.exists() && newData.exists())",
+          ".validate": "$p.matches(/^[0-9]{10}$/) && newData.isString() && newData.val().matches(/^[0-9]{1,5}(,[0-9]{1,5})*$/)"
+        }
+      },
+      "registrations": {
+        ".read": "auth != null",
+        ".indexOn": [
+          "status"
+        ],
+        "$p": {
+          ".write": "auth != null || (!data.exists() && newData.child('status').val() === 'pending')",
+          ".validate": "$p.matches(/^[0-9]{10}$/) && newData.hasChildren(['name','phone','nums','qty','amount','status','paymentStatus','ts']) && newData.child('phone').val() === $p && newData.child('name').isString() && newData.child('name').val().length >= 5 && newData.child('name').val().length <= 80 && newData.child('nums').isString() && newData.child('nums').val().matches(/^[0-9]{1,5}(,[0-9]{1,5})*$/) && newData.child('qty').isNumber() && newData.child('qty').val() >= 1 && newData.child('qty').val() <= 60000 && newData.child('amount').isNumber() && newData.child('amount').val() === newData.child('qty').val() * 20 && newData.child('status').val() === 'pending' && newData.child('paymentStatus').val() === 'pending' && newData.child('ts').isNumber()"
+        }
+      },
+      "shots": {
+        ".read": "auth != null",
+        "$p": {
+          ".write": "auth != null || (!data.exists() && newData.exists())",
+          ".validate": "$p.matches(/^[0-9]{10}$/) && newData.isString() && newData.val().length < 400000 && newData.val().beginsWith('data:image/jpeg;base64,')"
+        }
+      }
+    }
+  }
+}
